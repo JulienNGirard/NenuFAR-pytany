@@ -1,0 +1,124 @@
+
+
+        <html>
+            <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+
+            <script>
+        const submitButton = document.getElementById('submitbtn');
+        submitButton.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        var req = new XMLHttpRequest()
+        req.open('POST', '/ajax', true);
+
+        req.onreadystatechange = function()
+        {
+        const isOk = XMLHttpRequest.DONE && this.status === 200;
+        if(isOk) {
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        var nb = document.getElementById('nb').value;
+        var nma = document.getElementById('nma').value;
+        var nch = document.getElementById('nch').value;
+        var df = document.getElementById('df').value;
+        var dt = document.getElementById('dr').value;
+        var tobs = document.getElementById('tobs').value;
+        var mode = document.getElementById('mode').value;
+        var postVars = 'nb='+nb+'&nma='+nma+'&nch='+nch+'&df='+df+'&dt='+dt+'&tobs='+tobs+'&mode='+mode;
+
+        }
+        }
+
+        req.send(postVars);
+        }
+        ,false)
+</script>
+
+            <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+        <title>NenuFAR Data Volume Calculator - (Beta)</title>
+            </head>
+
+            <body>
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">NenuFAR Data Volume Calculator - (Beta)</a>
+        </div>
+    </div>
+</nav>
+                <div class="container">
+                <div class="row">
+                <p>Code source en cours de modification....</p>
+
+                <p>Enter observation parameters:</p>
+                </div>
+                <div class="row">
+                <form method="post" action="">
+                <p><label for="mode">Receiver mode</label>
+                <select id="mode" name="mode">
+                    <option value="BF">Beamforming</option>
+                    <option value="IM">Imaging</option>
+                    <option value="WF">Waveform</option>
+                    <option value="TB">Transient Buffer mode ('TBB')</option>
+                </select>
+
+                    <label for="nb">Bit mode</label>
+                    <select id="nb" name="nb">
+                    <option value="1">8 bits</option>
+                    <option value="2">16 bits</option>
+                    </select>
+                    </p>
+                    <p><label for="nma">Number of mini-arrays</label><br>
+                    <input id="nma" name="nma" type="range" min="0" max="97" step="1" value="96" oninput="nmafield.value=nma.value" />
+                    <input id="nmafield" type="number" value="96" min="0" max="97" oninput="nma.value=nmafield.value" />
+                    </p>
+
+                    <p><label for="nch">Number of channels per subbands</label><br>
+                    <input id="nch" name="nch" type="range" min="1" max="64" step="1" value="64" oninput="nchfield.value=nch.value" />
+                    <input id="nchfield" type="number" value="64" min="1" max="64" oninput="nch.value=nchfield.value" />
+                    </p>
+
+                    <p><label for="df">Total observation bandwidth (in MHz)</label><br>
+                    <input id="df" name="df" type="range" min="0" max="75" step="1" value="75" oninput="dffield.value=df.value" />
+                    <input id="dffield" type="number" min="1" max="75" value="75" oninput="df.value=dffield.value" />
+                    </p>
+
+                    <p><label for="dt">Time integration (in sec)</label><br>
+                    <input id="dt" name="dt" type="range" min="1" max="600" step="1" value="1" oninput="dtfield.value=dt.value" />
+                    <input id="dtfield" type="number" value="1" min="1" max="600" oninput="dt.value=dtfield.value" />
+                    </p>
+
+                    <p><label for="tobs">Total observing time (in sec)</label><br>
+                    <input id="tobs" name="tobs" type="range" min="0" max="36000" value="3600" step="1" oninput="tobsfield.value=tobs.value" />
+                    <input id="tobsfield" type="number" min="0" max="36000" value="3600" oninput="tobs.value=tobsfield.value" />
+                    </p>
+
+                    <p><input id="submitbtn" type="submit" class="btn btn-success" value="Compute data volume""/></p>
+                </form>
+                </div>
+                <hr>
+                <div class="row">
+                        <p>The result is :<br>
+                        <pre>{{results}}</pre>
+                        </p>
+                </div>
+        </div><!-- /.container -->
+            </body>
+            <footer>
+            <div class="container">
+                <div class="row">
+                        <i>J. N. Girard & P. Zarka (last update 11/05/2019)</i>
+            </div>
+        </div><!-- /.container -->
+</footer>
+        </html>
